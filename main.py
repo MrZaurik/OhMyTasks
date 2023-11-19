@@ -17,25 +17,40 @@ TAREAS_HECHAS = []  # lista de tareas realizadas
 # funciones a utilizar
 
 
-def crearTarea(titulo: str, descripcion: str, fechaCompletar: str, prioridad: str) -> list:
+def crearTarea() -> list:
     """ Función que crea una tarea y la agrega a la lista de tareas """
+
+    # Registro de los datos de la tarea
+    titulo = input("Ingrese el titulo de la tarea: ")
+
+    # Comprobamos la entrada del usuario
+    if titulo == '':  # Si el usuario no ingresa nada
+        while titulo == '':  # Mientras el usuario no ingrese nada
+            print("El título no puede estar vacío")
+            titulo = input("Ingrese el titulo de la tarea: ")
+
+    descripcion = input("Ingrese la descripcion de la tarea: ") # Característica opcional
+    fecha = input("Ingrese la fecha de la tarea: ")  # Característica opcional
+    # Característica opcional
+    prioridad = input("Ingrese la prioridad de la tarea: ")
+
     # Asignamos cada argumento a una casilla de la lista
-    tareaCreada = [titulo, descripcion, fechaCompletar, prioridad]
+    tareaCreada = [titulo, descripcion, fecha, prioridad]
     print("Tarea creada exitosamente")
     return tareaCreada  # Devolvemos el array con los datos de la tarea creada
 
 
-def eliminarTarea(listaTareas: list, tarea: list[0]) -> list:
+def eliminarTarea(listaTareas: list, tarea: str) -> list:
     """ Función que elimina una tarea de la lista de tareas """
     if tarea in listaTareas:
         listaTareas.remove(tarea)  # Eliminamos la tarea de la lista de tareas
-        print(f'Tarea "{tarea[0]}" eliminada exitosamente')
+        print(f'Tarea "{tarea}" eliminada exitosamente')
     else:
         print("Tarea no encontrada")
     return listaTareas  # Devolvemos la lista de tareas actualizada
 
 
-def modificarTarea(listaTareas: list, tarea: list) -> list:
+def modificarTarea(listaTareas: list, tarea: str) -> list:
     """
     Función que modifica una tarea de la lista de tareas.
 
@@ -50,6 +65,11 @@ def modificarTarea(listaTareas: list, tarea: list) -> list:
         # Solicitamos los nuevos datos de la tarea a actualizar
         print("Ingrese los nuevos datos de la tarea (Deje en blanco si desea mantener lo que tenía antes)")
         tituloNuevo = input("Ingrese el nuevo título de la tarea: ")
+        if tituloNuevo == '':  # Si el usuario no ingresa nada
+            while tituloNuevo == '':
+                print("El título no puede estar vacío")
+                tituloNuevo = input("Ingrese el nuevo título de la tarea: ")
+        
         descripcionNueva = input("Ingrese la nueva descripción de la tarea: ")
         fechaNueva = input("Ingrese la nueva fecha de la tarea: ")
         prioridadNueva = input("Ingrese la nueva prioridad de la tarea: ")
@@ -75,29 +95,46 @@ def modificarTarea(listaTareas: list, tarea: list) -> list:
     return listaTareas
 
 
-def realizarTarea(listaTareas: list, tarea: list[0]) -> list:
+def realizarTarea(listaTareas: list, tarea: str) -> list:
     """ Función que marca una tarea como realizada """
     # Almacena la tarea en la variable TAREAS_HECHAS
     if tarea in listaTareas:
         # Agregamos la tarea a la lista de tareas realizadas
         TAREAS_HECHAS.append(tarea)
         print(f'Tarea "{tarea[0]}" marcada como realizada')
+
         # Eliminamos la tarea de la lista de tareas pendientes
         eliminarTarea(listaTareas, tarea)
-    return 0
 
 
-def mostrarTareas(listaTareas: list) -> list:
-    """ Función que muestra las tareas pendientes """
-    # Muestra las tareas pendientes en forma de lista
-    print("Tareas pendientes: ")
-    for tarea in listaTareas:
-        print(tarea)
-    return 0
-
+def mostrarTareas(listaTareas: list, Selector: int = 0) -> list:
+    """ Función que muestra las tareas pendientes y realizadas """
+    if Selector == 0:
+        # Muestra las tareas pendientes en forma de lista
+        print("Tareas pendientes: ")
+        # Comprobamos si hay tareas pendientes
+        if len(listaTareas) == 0:
+            print("No hay tareas pendientes")
+        # Si hay tareas pendientes, las mostramos
+        else:
+            for tarea in listaTareas:
+                print(f'● {tarea[0]}')
+            return 0
+    else:
+        # Muestra las tareas realizadas en forma de lista
+        print("Tareas realizadas: ")
+        # Comprobamos si hay tareas realizadas
+        if len(listaTareas) == 0:
+            print("No hay tareas realizadas")
+        # Si hay tareas realizadas, las mostramos
+        else:
+            for tarea in listaTareas:
+                print(f'● {tarea[0]}')
+            return 0
 
 # -------------------------------- Ejecución del programa --------------------------------------------
 # De momento estamos trabajando en la consola, pero más adelante se implementará una interfaz gráfica
+
 
 # Menú principal
 print("Bienvenido a OhMyTask")
@@ -116,19 +153,13 @@ try:  # Manejo de excepciones
 
         # Creación de la tarea
         if opcion == '1':
-            # Registro de los datos de la tarea
-            titulo = input("Ingrese el titulo de la tarea: ")
-            descripcion = input("Ingrese la descripcion de la tarea: ")
-            fecha = input("Ingrese la fecha de la tarea: ")
-            prioridad = input("Ingrese la prioridad de la tarea: ")
             # Agregamos la tarea en forma de array a la lista de tareas
-            TAREAS.append(crearTarea(titulo, descripcion, fecha, prioridad))
+            TAREAS.append(crearTarea())
 
         # Eliminación de la tarea
         elif opcion == '2':
             # Mostramos las tareas para que el usuario pueda elegir cual eliminar
-            for i in range(len(TAREAS)):
-                print(f'●. {TAREAS[i][0]}')
+            mostrarTareas(TAREAS)
             tareaEliminar = input(
                 "Ingrese el titulo de la tarea que desea eliminar: ")
             for tarea in TAREAS:
@@ -139,8 +170,7 @@ try:  # Manejo de excepciones
 
         # Modificación de la tarea
         elif opcion == '3':
-            for i in range(len(TAREAS)):
-                print(f'●. {TAREAS[i][0]}')
+            mostrarTareas(TAREAS)
             tareaModificar = input(
                 "Ingrese el titulo de la tarea que desea modificar: ")
             for tarea in TAREAS:
@@ -151,8 +181,7 @@ try:  # Manejo de excepciones
 
         # Marcar tarea como realizada
         elif opcion == '4':
-            for i in range(len(TAREAS)):
-                print(f'●. {TAREAS[i][0]}')
+            mostrarTareas(TAREAS)
             tareaRealizada = input(
                 "Ingrese el titulo de la tarea que desea marcar como realizada: ")
             for tarea in TAREAS:
@@ -163,6 +192,7 @@ try:  # Manejo de excepciones
 
         elif opcion == '5':
             mostrarTareas(TAREAS)
+            mostrarTareas(TAREAS_HECHAS, 1)
 
         elif opcion == '6':
             gc.collect()  # Liberamos la memoria
