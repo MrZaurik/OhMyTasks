@@ -89,27 +89,30 @@ def modificarTarea(listaTareas: list, nombreTarea: str) -> None:
                 "Ingrese los nuevos datos de la tarea (Deje en blanco si desea mantener lo que tenía antes)")
             tituloNuevo = input("Ingrese el nuevo título de la tarea: ")
             if tituloNuevo == '':
-                while tituloNuevo == '':
-                    print("El título no puede estar vacío")
-                    tituloNuevo = input(
-                        "Ingrese el nuevo título de la tarea: ")
+                pass
             else:
                 tarea[0] = tituloNuevo
                 print("Título actualizado exitosamente")
 
             descripcionNueva = input(
                 "Ingrese la nueva descripción de la tarea: ")
-            if descripcionNueva:
+            if descripcionNueva == '':
+                pass
+            else:
                 tarea[1] = descripcionNueva
                 print("Descripción actualizada exitosamente")
 
             fechaNueva = input("Ingrese la nueva fecha de la tarea: ")
-            if fechaNueva:
+            if fechaNueva == '':
+                pass
+            else:
                 tarea[2] = fechaNueva
                 print("Fecha actualizada exitosamente")
 
             prioridadNueva = input("Ingrese la nueva prioridad de la tarea: ")
-            if prioridadNueva:
+            if prioridadNueva == '':
+                pass
+            else:
                 tarea[3] = prioridadNueva
                 print("Prioridad actualizada exitosamente")
 
@@ -131,14 +134,14 @@ def realizarTarea(listaTareas: list, tarea: str) -> None:
     Returns:
         None
     """
-    # Almacena la tarea en la variable TAREAS_HECHAS
-    if tarea in listaTareas:
-        # Agregamos la tarea a la lista de tareas realizadas
-        TAREAS_HECHAS.append(tarea)
-        print(f'Tarea "{tarea[0]}" marcada como realizada')
-
-        # Eliminamos la tarea de la lista de tareas pendientes
-        eliminarTarea(listaTareas, tarea)
+    for i in range(len(listaTareas)):
+        if listaTareas[i][0] == tarea:
+            TAREAS_HECHAS.append(listaTareas[i])
+            del listaTareas[i]
+            print("Tarea marcada como realizada exitosamente")
+            break
+        else:
+            print("Tarea no encontrada")
 
 
 def mostrarTareas(listaTareas: list, Selector: int = 0) -> None:
@@ -198,7 +201,7 @@ def main():
 
         if opcion == '1':
             TAREAS.append(crearTarea())
-        elif opcion in ['2', '3', '4', '5', '6']:
+        elif opcion in ['2', '3', '4']:
             if not TAREAS:
                 print("No hay tareas creadas.")
             else:
@@ -217,10 +220,10 @@ def main():
                     tarea_realizar = input(
                         "Ingrese el título de la tarea que desea marcar como realizada: ")
                     realizarTarea(TAREAS, tarea_realizar)
-                elif opcion == '5':
-                    mostrarTareas(TAREAS)
-                elif opcion == '6':
-                    mostrarTareas(TAREAS_HECHAS, 1)
+        elif opcion == '5':
+            mostrarTareas(TAREAS)
+        elif opcion == '6':
+            mostrarTareas(TAREAS_HECHAS, 1)
         elif opcion.lower() == 'q':
             break
         else:
