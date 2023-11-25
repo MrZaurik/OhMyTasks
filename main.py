@@ -194,6 +194,7 @@ def main():
         print("4. Marcar tarea como realizada")
         print("5. Mostrar tareas pendientes")
         print("6. Mostrar tareas realizadas")
+        print("7. Visualizar elementos de la tarea")
         print("q. Salir")
 
         opcion = input(
@@ -201,7 +202,7 @@ def main():
 
         if opcion == '1':
             TAREAS.append(crearTarea())
-        elif opcion in ['2', '3', '4']:
+        elif opcion in ['2', '3', '4', '7']:    # Opciones que requieren tareas creadas
             if not TAREAS:
                 print("No hay tareas creadas.")
             else:
@@ -220,6 +221,18 @@ def main():
                     tarea_realizar = input(
                         "Ingrese el título de la tarea que desea marcar como realizada: ")
                     realizarTarea(TAREAS, tarea_realizar)
+                elif opcion == '7':  # Visualizar elementos de la tarea
+                    mostrarTareas(TAREAS)
+                    tarea_visualizar = input(
+                        "Ingrese el título de la tarea que desea visualizar: ")
+                    for tarea in TAREAS:
+                        if tarea[0] == tarea_visualizar:
+                            print(
+                                f'Título: {tarea[0]}\nDescripción: {tarea[1]}\nFecha: {tarea[2]}\nPrioridad: {tarea[3]}')
+                            break
+                        else:
+                            print("Tarea no encontrada")
+
         elif opcion == '5':
             mostrarTareas(TAREAS)
         elif opcion == '6':
