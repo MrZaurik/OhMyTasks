@@ -9,8 +9,6 @@ Docente: Juan Pablo Hoyos Sanchez, PhD
 Institución: Universidad Nacional de Colombia
 """
 
-import gc
-
 TAREAS = []  # lista de tareas pendientes
 TAREAS_HECHAS = []  # lista de tareas realizadas
 
@@ -245,8 +243,6 @@ def main():
     print("\nPrograma finalizado")
     for task in TAREAS:
         print(task)
-    gc.collect()
-
 
 if __name__ == "__main__":
     main()
